@@ -9,21 +9,21 @@
 <body class="bg-ground font-body text-ink">
 
   <!-- ===================== EN-TÊTE ===================== -->
-  <header class="bg-ink text-white">
+  <header class="bg-[#EFBF04] text-white">
     <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-8 py-5">
       <div class="flex items-center gap-3">
         <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand">
           <svg aria-hidden="true" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><circle cx="12" cy="12" r="3"></circle></svg>
         </div>
         <div>
-          <p class="font-display text-2xl font-extrabold leading-none">Mon Dex</p>
-          <p class="text-sm text-gray-300">[Votre univers] · <span id="creature-count">6</span> créatures</p>
+          <p class="font-display text-2xl font-extrabold leading-8 text-[#93441A]">My Yugi Mutou</p>
+          <p class="text-sm text-ink">Yu-Gi-Oh! · <span id="creature-count">6</span> créatures</p>
         </div>
       </div>
       <nav aria-label="Navigation principale" class="flex flex-wrap gap-2">
-        <a href="#grid" class="rounded-full bg-white/10 px-4 py-2">Créatures</a>
-        <a href="#team" class="rounded-full bg-white/10 px-4 py-2">Mon équipe · <span id="team-count">0</span>/6</a>
-        <a href="#create" class="rounded-full bg-white px-4 py-2 font-bold text-ink">+ Nouvelle créature</a>
+        <a href="#grid" class="rounded-full bg-brand px-4 py-2">Cards</a>
+        <a href="#team" class="rounded-full bg-brand px-4 py-2">My Cards · <span id="team-count">0</span>/6</a>
+        <a href="#create" class="rounded-full bg-white px-4 py-2 font-bold text-ink">+ New Card</a>
       </nav>
     </div>
   </header>
@@ -33,13 +33,13 @@
     <!-- ===================== RECHERCHE ET FILTRES ===================== -->
     <section aria-label="Recherche et filtres" class="flex flex-col gap-4">
       <div class="flex flex-wrap items-end justify-between gap-4">
-        <h1 class="font-display text-4xl font-extrabold">Trouver une créature</h1>
+        <h1 class="font-display text-4xl font-extrabold">Find a Card</h1>
         <label class="flex w-full max-w-md flex-col gap-1 text-sm font-bold">
-          Rechercher par nom
+          Search by Name
           <input id="search" type="search" placeholder="ex. Mossling" class="field font-normal">
         </label>
       </div>
-      <div id="filters" role="group" aria-label="Filtrer par type" class="flex h-11 flex-nowrap gap-2 overflow-hidden">
+      <div id="filters" role="group" aria-label="Filtrer par type" class="flex h-auto flex-wrap gap-2 ">
           <button type="button" class="chip bg-ink text-white border-ink shrink-0">Tous</button>
           <button type="button" class="chip shrink-0">Feu</button>
           <button type="button" class="chip shrink-0">Eau</button>
@@ -50,10 +50,10 @@
       </div>
     </section>
 
-    <div class="flex gap-8 items-start">
+    <div class="block gap-8 items-start xl:flex">
 
       <!-- ===================== GRILLE DES CRÉATURES ===================== -->
-      <section id="grid" aria-label="Créatures" class="grid min-w-0 flex-1 grid-cols-3 gap-5">
+      <section id="grid" aria-label="Créatures" class="grid min-w-0 flex-1 grid-cols-1 gap-5 mb-10 sm:grid-cols-2 md:grid-cols-3 sm:mb-10 md:mb-10">
 
         <!-- Carte écrite à la main : à remplacer par des cartes générées en JS (Partie 2) -->
         <article class="flex flex-col gap-3 rounded-card bg-white p-3 pb-4">
@@ -66,7 +66,7 @@
             <span class="rounded-full bg-brand-light px-3 py-1 text-sm font-bold text-ink">Feu</span>
           </div>
           <p class="text-sm text-muted">Base · Total 309</p>
-          <button type="button" class="btn-outline">Ajouter à l'équipe</button>
+          <button type="button" class="btn-outline">Add to my Collections</button>
         </article>
 
         <!-- Carte écrite à la main : à remplacer par des cartes générées en JS (Partie 2) -->
@@ -167,7 +167,7 @@
 
         <!-- ===================== MON ÉQUIPE (INCOMPLÈTE) ===================== -->
         <section id="team" aria-label="Mon équipe" class="rounded-card bg-white p-6">
-          <h2 class="font-display text-2xl font-extrabold">Mon équipe</h2>
+          <h2 class="font-display text-2xl font-extrabold">My Collections</h2>
           <!-- TODO (Partie 1) : terminez cette section en suivant la maquette :
                compteur x/6, 6 emplacements (vides ou remplis), message de règles. -->
         </section>
@@ -178,7 +178,7 @@
     <!-- ===================== FORMULAIRE DE CRÉATION ===================== -->
     <section id="create" aria-label="Nouvelle créature" class="flex flex-col gap-6 rounded-card bg-white p-8">
       <div>
-        <h2 class="font-display text-3xl font-extrabold">Nouvelle créature</h2>
+        <h2 class="font-display text-3xl font-extrabold">New Card</h2>
         <p class="text-muted">Chaque champ est vérifié avant l'ajout de la créature.</p>
       </div>
       <form id="creature-form" novalidate class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
@@ -224,7 +224,7 @@
         </label>
         <div class="flex flex-wrap justify-end gap-3 md:col-span-2 lg:col-span-4">
           <button type="reset" class="btn-outline px-6">Effacer</button>
-          <button type="submit" class="btn-primary">Ajouter la créature</button>
+          <button type="submit" class="btn-primary">Create Card</button>
         </div>
       </form>
     </section>
