@@ -10,7 +10,8 @@ const descriptionRegex = /^[\s\S]{10,200}$/ ;
 
 
 
-const form = document.getElementById('creature-form')
+const form = document.getElementById('creature-form');
+const fields = document.querySelectorAll(".field");
 const idInput = document.querySelector('[name = "id"]');
 const nameInput = document.querySelector('[name = "name"]');
 const typeInput = document.querySelector('[name = "type"]');
@@ -21,295 +22,96 @@ const stat3Input = document.querySelector('[name = "stat3"]');
 const imageInput = document.querySelector('[name = "image"]');
 const descriptionInput = document.querySelector('[name = "description"]');
 
-const checkInput = () =>{
-
-    const idValue = idInput.value.trim();
-    const nameValue = nameInput.value.trim();
-    const typeValue = typeInput.value.trim();
-    const levelValue = levelInput.value.trim();
-    const stat1Value = stat1Input.value.trim();
-    const stat2Value = stat2Input.value.trim();
-    const stat3Value = stat3Input.value.trim();
-    const imageValue = imageInput.value.trim();
-    const descriptionValue = descriptionInput.value.trim();
-
-    //id input validation
-    if(idValue === ""){
-
-        idInput.nextElementSibling.textContent = "the id field can't be empty";
-        idInput.nextElementSibling.style.color = "red";
-    }
-    else if(idRegex.test(idValue) === false){
-        idInput.nextElementSibling.textContent = "name must be in this format : #000";
-        idInput.nextElementSibling.style.color = "red";
-    }
-    else if(idRegex.test(idValue)){
-        idInput.style.border = "1px solid green";
-    }
-
-    //name input validation
-
-    if(nameValue === ""){
-
-        nameInput.nextElementSibling.textContent = "the name field can't be empty";
-        nameInput.nextElementSibling.style.color = "red";
-    }
-    else if(nameRegex.test(nameValue) === false){
-        nameInput.nextElementSibling.textContent = "wrong format";
-        nameInput.nextElementSibling.style.color = "red";
-    }
-    else if(nameRegex.test(nameValue)){
-        idInput.style.border = "1px solid green";
-    }
-
-    //type validation
-
-    if(typeValue === ""){
-
-        typeInput.nextElementSibling.textContent = "one type must be selected";
-        typeInput.nextElementSibling.style.color = "red";
-    }
-    else if (typeValue){
-        typeInput.nextElementSibling.textContent = ""
-        typeInput.style.border = "1px solid green"
-    }
-
-    //level validation 
-
-    if(levelValue === ""){
-
-        levelInput.nextElementSibling.textContent = "the value field can't be empty";
-        levelInput.nextElementSibling.style.color = "red";
-    }
-    else if (levelValue){
-        levelInput.nextElementSibling.textContent = ""
-        levelInput.style.border = "1px solid green"
-    }
-
-    //stat1 validation
-
-    if(stat1Value === ""){
-
-        stat1Input.nextElementSibling.textContent = "the stat field can't be empty";
-        stat1Input.nextElementSibling.style.color = "red";
-    }
-    else if(statRegex.test(stat1Value) === false){
-        stat1Input.nextElementSibling.textContent = "Nombre entier de 0 à 999 ";
-        stat1Input.nextElementSibling.style.color = "red";
-    }
-    else if(statRegex.test(stat1Value)){
-        stat1Input.style.border = "1px solid green";
-    }
-
-    //stat2 validation
-
-    if(stat2Value === ""){
-
-        stat2Input.nextElementSibling.textContent = "the stat field can't be empty";
-        stat2Input.nextElementSibling.style.color = "red";
-    }
-    else if(statRegex.test(stat2Value) === false){
-        stat2Input.nextElementSibling.textContent = "Nombre entier de 0 à 999 ";
-        stat2Input.nextElementSibling.style.color = "red";
-    }
-    else if(statRegex.test(stat2Value)){
-        stat2Input.style.border = "1px solid green";
-    }
-
-    //stat3 validation
-
-    if(stat3Value === ""){
-
-        stat3Input.nextElementSibling.textContent = "the stat field can't be empty";
-        stat3Input.nextElementSibling.style.color = "red";
-    }
-    else if(statRegex.test(stat3Value) === false){
-        stat3Input.nextElementSibling.textContent = "Nombre entier de 0 à 999 ";
-        stat3Input.nextElementSibling.style.color = "red";
-    }
-    else if(statRegex.test(stat3Value)){
-        stat3Input.style.border = "1px solid green";
-    }
-
-
-    //image validation
-
-    if(imageValue === ""){
-
-        imageInput.nextElementSibling.textContent = "the image field can't be empty";
-        imageInput.nextElementSibling.style.color = "red";
-    }
-    else if(imageRegex.test(imageValue) === false){
-        imageInput.nextElementSibling.textContent = "image must be .png, .jpg, .jpeg, .webp ou .gif ";
-        imageInput.nextElementSibling.style.color = "red";
-    }
-    else if(imageRegex.test(imageValue)){
-        imageInput.style.border = "1px solid green";
-    }
-
-
-    //description validation
-
-    if(descriptionValue === ""){
-
-        descriptionInput.nextElementSibling.textContent = "the description field can't be empty";
-        descriptionInput.nextElementSibling.style.color = "red";
-    }
-    else if(descriptionRegex.test(descriptionValue) === false){
-        descriptionInput.nextElementSibling.textContent = "10 à 200 caractères";
-        descriptionInput.nextElementSibling.style.color = "red";
-    }
-    else if(descriptionRegex.test(descriptionValue)){
-        descriptionInput.style.border = "1px solid green";
-    }
 
 
 
 
 
 
+const inputsValidation = () => {
+    let isvalid = false;
+    fields.forEach((field) => {
+        field.addEventListener("input", () => {
+            field.nextElementSibling.textContent = "";
+            field.style.border = "";
 
+            const value = field.value.trim();
 
+            if (value === "") {
+                return;
+            }
 
-}
+            if(field === idInput && !idRegex.test(value)){
 
+                field.nextElementSibling.textContent = "# suivi de 3 chiffres";
+                field.nextElementSibling.style.color = "red";
+                field.style.border = "1px solid red";
+            }
+            else if(field === nameInput && !nameRegex.test(value)) {
+                field.nextElementSibling.textContent = "2 à 30 caractères";
+                field.nextElementSibling.style.color = "red";
+                field.style.border = "1px solid red";
 
+            }
+            else if(field === stat1Input && !statRegex.test(value)){
 
+                field.nextElementSibling.textContent = "Invalid Format";
+                field.nextElementSibling.style.color = "red";
+                field.style.border = "1px solid red";
 
+            }
+            else if(field === stat2Input && !statRegex.test(value)){
+                field.nextElementSibling.textContent = "Invalid Format";
+                field.nextElementSibling.style.color = "red";
+                field.style.border = "1px solid red";
+            }
+            else if(field === stat3Input && !statRegex.test(value)){
+                field.nextElementSibling.textContent = "Invalid Format";
+                field.nextElementSibling.style.color = "red";
+                field.style.border = "1px solid red";
+            }
+            else if(field === imageInput && !imageRegex.test(value)){
+                field.nextElementSibling.textContent = "Invalid Format";
+                field.nextElementSibling.style.color = "red";
+                field.style.border = "1px solid red";
+            }
+            else if(field === descriptionInput && !descriptionRegex.test(value)){
+                field.nextElementSibling.textContent = "Invalid Format";
+                field.nextElementSibling.style.color = "red";
+                field.style.border = "1px solid red";
+            }
+            else {
+                field.style.border = "1px solid green";
+                field.nextElementSibling.textContent = "";
 
-const styleInput = () =>{
-
-    // id input style
-
-    idInput.addEventListener("input", () => {
-    idInput.nextElementSibling.textContent = "";
-    if(idRegex.test(idInput.value.trim()) === false){
+                isvalid = true;
+            }
         
-        idInput.style.border = "1px solid red";
-    }
-    else if(idRegex.test(idInput.value.trim())){
-         idInput.style.border = "1px solid green";
-    }
-  });
-
-  //name input style
-
-  nameInput.addEventListener("input", () => {
-    nameInput.nextElementSibling.textContent = "";
-    if(nameRegex.test(nameInput.value.trim()) === false){
-        
-        nameInput.style.border = "1px solid red";
-    }
-    else if(nameRegex.test(nameInput.value.trim())){
-         nameInput.style.border = "1px solid green";
-    }
-  });
-
-  //type input style
-
-  typeInput.addEventListener("input", () => {
-    typeInput.nextElementSibling.textContent = "";
-    if(typeInput){
-        
-        typeInput.style.border = "1px solid green";
-    }
-  });
-
-
-
-  // level input style
-  levelInput.addEventListener("input", () => {
-    levelInput.nextElementSibling.textContent = "";
-    if(levelInput){
-        
-        levelInput.style.border = "1px solid green";
-    }
-  });
-
-  // stat1 input style
-
-    stat1Input.addEventListener("input", () => {
-    stat1Input.nextElementSibling.textContent = "";
-    if(statRegex.test(stat1Input.value.trim()) === false){
-        
-        stat1Input.style.border = "1px solid red";
-    }
-    else if(statRegex.test(stat1Input.value.trim())){
-         stat1Input.style.border = "1px solid green";
-    }
-  });
-
-
-  //stat2 input style
-
-    stat2Input.addEventListener("input", () => {
-    stat2Input.nextElementSibling.textContent = "";
-    if(statRegex.test(stat2Input.value.trim()) === false){
-        
-        stat2Input.style.border = "1px solid red";
-    }
-    else if(statRegex.test(stat2Input.value.trim())){
-         stat2Input.style.border = "1px solid green";
-    }
-  });
-
-
-  // stat3 input style
-
-    stat3Input.addEventListener("input", () => {
-    stat3Input.nextElementSibling.textContent = "";
-    if(statRegex.test(stat3Input.value.trim()) === false){
-        
-        stat3Input.style.border = "1px solid red";
-    }
-    else if(statRegex.test(stat3Input.value.trim())){
-         stat3Input.style.border = "1px solid green";
-    }
-  });
-
-
-  // image input style
-
-    imageInput.addEventListener("input", () => {
-    imageInput.nextElementSibling.textContent = "";
-    if(imageRegex.test(imageInput.value.trim()) === false){
-        
-        imageInput.style.border = "1px solid red";
-    }
-    else if(imageRegex.test(imageInput.value.trim())){
-         imageInput.style.border = "1px solid green";
-    }
-  });
-
-  // description input style
-    descriptionInput.addEventListener("input", () => {
-    descriptionInput.nextElementSibling.textContent = "";
-    if(descriptionRegex.test(descriptionInput.value.trim()) === false){
-        
-        descriptionInput.style.border = "1px solid red";
-    }
-    else if(descriptionRegex.test(descriptionInput.value.trim())){
-         descriptionInput.style.border = "1px solid green";
-    }
-  });
-
-}
-
-
-styleInput();
-
-
+        });
+    });
+};
+inputsValidation();
 
 
 
 form.addEventListener('submit'  , (e) =>{
     e.preventDefault();
     
-    checkInput();
+    
     
     
 
 })
+
+form.addEventListener("reset", () => {
+    form.querySelectorAll(".field").forEach((field) => {
+        field.style.removeProperty("border");
+    });
+
+    form.querySelectorAll(".error-message").forEach((error) => {
+        error.textContent = "";
+    });
+});
 
 // =============================================================
 // script.js — Mon Dex

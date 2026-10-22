@@ -16,6 +16,25 @@
 //
 // Pensez à citer la source de vos images dans le README.
 
-
 const creatures = [];
+const getData = async () => {
+  try {
+
+    const res = await fetch("https://db.ygoprodeck.com/api/v7/cardinfo.php");
+    const data = await res.json();
+
+    creatures.push(data)
+    console.log(creatures)
+
+    console.log(data);
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+
+getData();
+
+
+console.log(creatures)
 
