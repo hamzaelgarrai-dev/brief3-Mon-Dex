@@ -16,25 +16,17 @@
 //
 // Pensez à citer la source de vos images dans le README.
 
-const creatures = [];
-const getData = async () => {
+export const getData = async () => {
   try {
 
-    const res = await fetch("https://db.ygoprodeck.com/api/v7/cardinfo.php");
+    const res = await fetch("https://db.ygoprodeck.com/api/v7/cardinfo.php?num=12&offset=12");
     const data = await res.json();
 
-    creatures.push(data)
-    console.log(creatures)
+    return data.data;
 
-    console.log(data);
   } catch (error) {
     console.log(error)
+    return [];
   }
 };
-
-
-getData();
-
-
-console.log(creatures)
 
