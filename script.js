@@ -118,9 +118,6 @@ inputsValidation();
 form.addEventListener('submit'  , (e) =>{
     e.preventDefault();
     
-    
-    
-    
 
 })
 
@@ -142,6 +139,18 @@ form.addEventListener("reset", () => {
 // Une carte GitHub Projects et au moins un commit par fonctionnalité.
 
 
+// // event delegation
+
+// function addGlobalEventListner(type, selector, callback , parent = document){
+
+//     parent.addEventListener(type , e=>{
+//         if(e.target.matches(selector)){
+//             callback(e);
+//         }
+//     })
+
+// }
+
 // -------------------------------------------------------------
 // 1. AFFICHAGE
 // Supprimez les cartes écrites à la main dans index.html et
@@ -149,7 +158,8 @@ form.addEventListener("reset", () => {
 // -------------------------------------------------------------
 let cards = [];
 const cardContainer = document.getElementById("grid")
-const showCards = () =>{
+const showCards = (cards) =>{
+    cardContainer.innerHTML = "";
 
     cards.forEach((card)=>{
         const article = document.createElement("article");
@@ -167,7 +177,7 @@ const showCards = () =>{
           <div class="flex items-center  gap-2 h-10">
             <span class="rounded-full bg-[#253348] px-3 py-1  text-sm font-bold text-white">${card.type}</span>
           </div>
-          <p class="text-sm text-muted">Race · ${card.race}</p>
+          <p class="text-sm text-[#9CA9BC]">Race · ${card.race}</p>
           <button type="button" class="btn-outline bg-[#232d3d] border border-[#303947] text-white text-[15px] hover:bg-brand ">Add to my Collections</button>`
 
           cardContainer.appendChild(article);
@@ -186,6 +196,7 @@ const showCards = () =>{
 const loadCardDetails = () =>{
 
     let articles = document.querySelectorAll(".article");
+    
     let detailSection = document.getElementById("detail");
 
     articles.forEach((article)=>{
@@ -193,43 +204,39 @@ const loadCardDetails = () =>{
 
        let id =  article.getAttribute("data-id");
 
-       console.log(id);
-
        cards.forEach((card)=>{
         if(card.id == id){
-            detailSection.innerHTML = `<div class="flex items-center justify-between">
-            <span class="font-mono text-sm text-muted">${card.id} · Détail</span>
-            <button type="button" aria-label="Fermer le détail" class="btn-outline w-11 px-0">✕</button>
+            detailSection.innerHTML = `<div class="flex items-center justify-between ">
+            <span class="font-mono text-sm text-[#9CA9BC]">${card.id} · Détail</span>
+            <button type="button" aria-label="Fermer le détail" class="closeBtn btn-outline w-11 px-0">✕</button>
           </div>
-          <div class="flex h-48 items-center justify-center rounded-2xl bg-brand-light">
-            <img class="absolute h-52 " src="${card.card_images[0].image_url_cropped}" alt="">
+          <div class="flex h-64 items-center justify-center rounded-2xl border border-[#303947]">
+            <img class="absolute h-56 " src="${card.card_images[0].image_url}" alt="">
           </div>
           <div class="flex items-center justify-between">
             <h2 class="font-display text-3xl font-extrabold max-w-[240px] text-white">${card.name}</h2>
             <span class="rounded-full bg-[#253348] border border-[#303947] shrink-0 px-3 py-1 text-sm font-bold">${card.type}</span>
           </div>
-          <p class="text-gray-700">${card.desc}</p>
+          <p class="text-[#9CA9BC]">${card.desc}</p>
           <div class="flex flex-col gap-2 text-sm">
-            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-muted">PV</span><span class="h-3 rounded-full bg-ground"><span class="block h-3 w-[30%] rounded-full bg-brand"></span></span><span class="text-right text-muted font-mono">45</span></div>
-            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-muted">Attaque</span><span class="h-3 rounded-full bg-ground"><span class="block h-3 w-[33%] rounded-full bg-brand"></span></span><span class="text-right font-mono text-muted">49</span></div>
-            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-muted">Défense</span><span class="h-3 rounded-full bg-ground"><span class="block h-3 w-[43%] rounded-full bg-brand"></span></span><span class="text-right font-mono text-muted">65</span></div>
+            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-[#9CA9BC]">Level</span><span class="h-3 rounded-full bg-ground"><span class="block h-3  rounded-full bg-brand" " style="width: ${Math.min((card.level / 12) * 100, 100)}%"></span></span><span class="text-right text-[#9CA9BC] font-mono">${card.level}</span></div>
+            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-[#9CA9BC]">Attaque</span><span class="h-3 rounded-full bg-ground"><span class="block h-3  rounded-full bg-brand" " style="width: ${Math.min((card.atk / 5000) * 100, 100)}%"></span></span><span class="text-right font-mono text-[#9CA9BC]">${card.atk}</span></div>
+            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-[#9CA9BC]">Défense</span><span class="h-3 rounded-full bg-ground"><span class="block h-3  rounded-full bg-brand" " style="width: ${Math.min((card.def / 5000) * 100, 100)}%"></span></span><span class="text-right font-mono text-[#9CA9BC]">${card.def}</span></div>
           </div>
           <button type="button" class="btn-primary">Add to My Collections</button>`
+          const closeBtn = document.querySelector(".closeBtn");
+
+          closeBtn.addEventListener("click" , ()=>{
+            detailSection.innerHTML = `<div class="font-display text-2xl font-extrabold text-white">No Card Selected</div>`
+          })
         }
        })
         
     } )
 })
-
-
+    
 
 }
-
-
-
-
-
-
 
 
 
@@ -239,6 +246,27 @@ const loadCardDetails = () =>{
 // (sans tenir compte des majuscules).
 // -------------------------------------------------------------
 
+const searchField = document.getElementById("search");
+
+searchField.addEventListener("input", (e) =>{
+
+    
+
+    const searchValue = e.target.value.toLowerCase();
+
+    console.log("Searching:", searchValue);
+  console.log("Cards:", cards);
+    const filteredCards = cards.filter((card) =>
+    card.name.toLowerCase().includes(searchValue)
+    );
+
+    console.log("Results:", filteredCards);
+    showCards(filteredCards);
+
+
+
+   
+})
 
 // -------------------------------------------------------------
 // 4. FILTRE
@@ -274,29 +302,28 @@ const loadType = () =>{
 const loadCardByType = () =>{
 
     const typesBtn = document.querySelectorAll(".type")
-
-    
-
     typesBtn.forEach((typebtn) =>{
 
         typebtn.addEventListener("click" , (e)=>{
             cardContainer.innerHTML = "";
             typesBtn.forEach((btn) => {
-            btn.classList.remove("active");
-            btn.classList.remove("bg-orange-500");
+            
+            btn.classList.remove("bg-brand");
             btn.classList.add("bg-[#253348]");
         });
 
             const activeTypebtn = e.currentTarget;
-            activeTypebtn.classList.add("active");
+            
             activeTypebtn.classList.remove("bg-[#253348]");
             activeTypebtn.classList.add("bg-brand");
             
     
             cards.forEach((card)=>{
                 if(card.type == typebtn.textContent){
+
+
                     
-                    const article = document.createElement("article");
+                   const article = document.createElement("article");
                    article.dataset.id = card.id;
                    article.className = "article flex flex-col gap-3 rounded-card bg-[#171E29] border-[#31333A] border p-3 pb-4 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg cursor-pointer"
 
@@ -314,11 +341,15 @@ const loadCardByType = () =>{
                      <p class="text-sm text-muted">Race · ${card.race}</p>
                   <button type="button" class="btn-outline bg-[#232d3d] border border-[#303947] text-white text-[15px] hover:bg-brand ">Add to my Collections</button>`
 
+                  
+
                     cardContainer.appendChild(article);
+                    loadCardDetails()
 
                 }else if(typebtn.textContent == "All"){
                     cardContainer.innerHTML = "";
-                    showCards();
+                    showCards(cards);
+                    loadCardDetails()
                    
 
                 }
@@ -362,10 +393,11 @@ const main = async () => {
 
  cards = await getData();
 
-  showCards()
+  showCards(cards)
   loadType()
-  loadCardDetails()
   loadCardByType()
+  loadCardDetails()
+
   
 };
 
