@@ -2,6 +2,7 @@
 //getting data from data.js 
 
 import {getData} from './data.js'
+let cards = [];
 
 
 
@@ -18,6 +19,7 @@ const imageRegex = /^https:\/\/\S+\.(png|jpe?g|webp|gif)$/i;
 const descriptionRegex = /^[\s\S]{10,200}$/ ;
 
 
+// getting input field 
 
 const form = document.getElementById('creature-form');
 const fields = document.querySelectorAll(".field");
@@ -30,6 +32,7 @@ const stat2Input = document.querySelector('[name = "stat2"]');
 const stat3Input = document.querySelector('[name = "stat3"]');
 const imageInput = document.querySelector('[name = "image"]');
 const descriptionInput = document.querySelector('[name = "description"]');
+
 
 
 
@@ -138,25 +141,11 @@ form.addEventListener("reset", () => {
 // Écrivez votre code ici, fonctionnalité par fonctionnalité.
 // Une carte GitHub Projects et au moins un commit par fonctionnalité.
 
-
-// // event delegation
-
-// function addGlobalEventListner(type, selector, callback , parent = document){
-
-//     parent.addEventListener(type , e=>{
-//         if(e.target.matches(selector)){
-//             callback(e);
-//         }
-//     })
-
-// }
-
 // -------------------------------------------------------------
 // 1. AFFICHAGE
 // Supprimez les cartes écrites à la main dans index.html et
 // construisez la grille à partir du tableau `creatures`.
 // -------------------------------------------------------------
-let cards = [];
 const cardContainer = document.getElementById("grid")
 const showCards = (cards) =>{
     cardContainer.innerHTML = "";
@@ -178,7 +167,7 @@ const showCards = (cards) =>{
             <span class="rounded-full bg-[#253348] px-3 py-1  text-sm font-bold text-white">${card.type}</span>
           </div>
           <p class="text-sm text-[#9CA9BC]">Race · ${card.race}</p>
-          <button type="button" class="btn-outline bg-[#232d3d] border border-[#303947] text-white text-[15px] hover:bg-brand ">Add to my Collections</button>`
+          <button type="button" class="AddtoCollection btn-outline bg-[#232d3d] border border-[#303947] text-white text-[15px] hover:bg-brand ">Add to my Collections</button>`
 
           cardContainer.appendChild(article);
     })
@@ -195,17 +184,24 @@ const showCards = (cards) =>{
 
 const loadCardDetails = () =>{
 
-    let articles = document.querySelectorAll(".article");
+    const articles = document.querySelectorAll(".article");
     
-    let detailSection = document.getElementById("detail");
+    const detailSection = document.getElementById("detail");
 
+    
     articles.forEach((article)=>{
-    article.addEventListener("click", ()=>{
+    article.addEventListener("click", (e)=>{
+        
+        if (e.target.closest(".AddtoCollection")) {
+            return;
+        }
+        
 
        let id =  article.getAttribute("data-id");
 
        cards.forEach((card)=>{
         if(card.id == id){
+            detailSection.dataset.id = card.id;
             detailSection.innerHTML = `<div class="flex items-center justify-between ">
             <span class="font-mono text-sm text-[#9CA9BC]">${card.id} · Détail</span>
             <button type="button" aria-label="Fermer le détail" class="closeBtn btn-outline w-11 px-0">✕</button>
@@ -219,11 +215,11 @@ const loadCardDetails = () =>{
           </div>
           <p class="text-[#9CA9BC]">${card.desc}</p>
           <div class="flex flex-col gap-2 text-sm">
-            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-[#9CA9BC]">Level</span><span class="h-3 rounded-full bg-ground"><span class="block h-3  rounded-full bg-brand" " style="width: ${Math.min((card.level / 12) * 100, 100)}%"></span></span><span class="text-right text-[#9CA9BC] font-mono">${card.level}</span></div>
-            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-[#9CA9BC]">Attaque</span><span class="h-3 rounded-full bg-ground"><span class="block h-3  rounded-full bg-brand" " style="width: ${Math.min((card.atk / 5000) * 100, 100)}%"></span></span><span class="text-right font-mono text-[#9CA9BC]">${card.atk}</span></div>
-            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-[#9CA9BC]">Défense</span><span class="h-3 rounded-full bg-ground"><span class="block h-3  rounded-full bg-brand" " style="width: ${Math.min((card.def / 5000) * 100, 100)}%"></span></span><span class="text-right font-mono text-[#9CA9BC]">${card.def}</span></div>
+            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-[#9CA9BC]">Level</span><span class="h-3 rounded-full bg-ground"><span class="block h-3  rounded-full bg-brand" " style="width: ${Math.min(((card.level ?? 0) / 12) * 100, 100)}%"></span></span><span class="text-right text-[#9CA9BC] font-mono">${card.level ?? "-"}</span></div>
+            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-[#9CA9BC]">Attaque</span><span class="h-3 rounded-full bg-ground"><span class="block h-3  rounded-full bg-brand" " style="width: ${Math.min(((card.atk ?? 0) / 5000) * 100, 100)}%"></span></span><span class="text-right font-mono text-[#9CA9BC]">${card.atk ?? "-"}</span></div>
+            <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2"><span class="font-bold text-[#9CA9BC]">Défense</span><span class="h-3 rounded-full bg-ground"><span class="block h-3  rounded-full bg-brand" " style="width: ${Math.min(((card.def ?? 0) / 5000) * 100, 100)}%"></span></span><span class="text-right font-mono text-[#9CA9BC]">${card.def ?? "-"}</span></div>
           </div>
-          <button type="button" class="btn-primary">Add to My Collections</button>`
+          <button type="button" class="btn-primary AddtoCollection">Add to My Collections</button>`
           const closeBtn = document.querySelector(".closeBtn");
 
           closeBtn.addEventListener("click" , ()=>{
@@ -231,6 +227,14 @@ const loadCardDetails = () =>{
           })
         }
        })
+
+       if (teamgrid.children.length >= 6) {
+        document.querySelectorAll(".AddtoCollection").forEach((btn) => {
+            btn.disabled = true;
+            btn.classList.add("opacity-40", "cursor-not-allowed");
+            btn.textContent = "Collection is Full";
+        });
+    }
         
     } )
 })
@@ -339,7 +343,7 @@ const loadCardByType = () =>{
                       <span class="rounded-full bg-[#253348] px-3 py-1  text-sm font-bold text-white">${card.type}</span>
                      </div>
                      <p class="text-sm text-muted">Race · ${card.race}</p>
-                  <button type="button" class="btn-outline bg-[#232d3d] border border-[#303947] text-white text-[15px] hover:bg-brand ">Add to my Collections</button>`
+                  <button type="button" class="btn-outline bg-[#232d3d] border border-[#303947] text-white text-[15px] hover:bg-brand AddtoCollection">Add to my Collections</button>`
 
                   
 
@@ -376,6 +380,77 @@ const loadCardByType = () =>{
 // écouteur sur la grille et UN SEUL sur l'équipe (délégation).
 // -------------------------------------------------------------
 
+
+function GlobalEventListner(type, selector, callback,  parents = [document] ){
+
+    parents.forEach((parent) => {
+    parent.addEventListener(type, (e) => {
+      if (e.target.matches(selector)) {
+        callback(e);
+      }
+    });
+  });
+
+}
+const teamgrid = document.getElementById("team-grid")
+const detailSection = document.getElementById("detail");
+
+GlobalEventListner("click" , ".AddtoCollection" , e =>{
+    
+     const selectedCardID = e.target.parentElement.getAttribute("data-id")
+
+    const cardCount = document.getElementById("team-count");
+     const alreadyAdded = teamgrid.querySelector(`[data-id="${selectedCardID}"]`);
+
+     if (alreadyAdded) { 
+        alert("card already exist in collection")
+        return;
+     }
+    cards.forEach((card)=>{
+                if(card.id == selectedCardID && teamgrid.children.length <= 6 ){
+                    
+                    
+                    teamgrid.innerHTML += `<div class="team-card relative" data-id="${selectedCardID}">
+                      <button type="button" aria-label="Remove card"
+                     class="closeBtn absolute btn-outline bg-white/60 w-9 h-9 px-0 z-50 right-4 top-2">✕</button>
+
+                     <img class="relative h-56 w-full object-contain"
+                    src="${card.card_images[0].image_url}" alt="${card.name}">
+                     </div>`
+                     
+                     cardCount.textContent = teamgrid.children.length
+                }
+
+                if (teamgrid.children.length >= 6) {
+                   document.querySelectorAll(".AddtoCollection").forEach((btn) => {
+                   btn.disabled = true;
+                   btn.classList.add("opacity-40", "cursor-not-allowed");
+                   btn.textContent = "Collection is Full"
+                 });
+                }
+
+
+})
+},[cardContainer , detailSection ])
+
+GlobalEventListner("click", ".closeBtn", (e) => {
+  
+  const CollectionCard = e.target.closest(".team-card");
+
+  console.log("clicked")
+
+  if (CollectionCard) {
+    CollectionCard.remove();
+  }
+
+  if (teamgrid.children.length < 6) {
+    document.querySelectorAll(".AddtoCollection").forEach((btn) => {
+        btn.textContent = "Add to my Collections"
+      btn.disabled = false;
+      btn.classList.remove("opacity-40", "cursor-not-allowed");
+    });
+  }
+},[teamgrid]);
 
 // -------------------------------------------------------------
 // 7. RÈGLES DE L'ÉQUIPE
