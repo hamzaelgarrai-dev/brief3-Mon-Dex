@@ -37,8 +37,8 @@ Puis committez `dist/output.css` : GitHub Pages ne lance pas Tailwind pour vous.
 
 ## À compléter par vous
 
-- **Univers choisi :** [Pokémon / Digimon / Yu-Gi-Oh!]
-- **Lien GitHub Pages :** [lien]
-- **Sources des images :** [liens]
+- **Univers choisi :** [Yu-Gi-Oh!]
+- **Lien Trello :** [https://trello.com/invite/b/6ae074253a6c9efb51e9ec1a/ATTI6155d4a25c52ed72356a1c07c00ed69b14594CE4/brief-mondex]
+- **Sources des images :** [https://ygoprodeck.com/api-guide/]
 - **Tests des expressions régulières :** [collez ici vos tests console : 2 valeurs valides et 2 invalides par expression]
-- **Bonus réalisés :** [liste]
+- **Bonus réalisés :** [LocalStorage, Fetch API]

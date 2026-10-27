@@ -21,8 +21,8 @@ const descriptionRegex = /^[\s\S]{10,200}$/ ;
 
 // getting input field 
 
-const form = document.getElementById('creature-form');
-const fields = document.querySelectorAll(".field");
+// const form = document.getElementById('creature-form');
+// const fields = document.querySelectorAll(".field");
 const idInput = document.querySelector('[name = "id"]');
 const nameInput = document.querySelector('[name = "name"]');
 const typeInput = document.querySelector('[name = "type"]');
@@ -32,97 +32,160 @@ const stat2Input = document.querySelector('[name = "stat2"]');
 const stat3Input = document.querySelector('[name = "stat3"]');
 const imageInput = document.querySelector('[name = "image"]');
 const descriptionInput = document.querySelector('[name = "description"]');
+const createCardBtn = document.getElementById("create-card");
+
+// createCardBtn.disabled = true;
 
 
 
+// form.addEventListener("input" , ()=>{
 
+const form = document.getElementById("creature-form");
+const fields = form.querySelectorAll(".field");
 
+const checkFormValid = () => {
+    let valid = true;
 
+    fields.forEach((field) => {
+        const value = field.value.trim();
 
+        if (value === "") {
+            valid = false;
+        }
+        else if (field === idInput && !idRegex.test(value)) {
+            valid = false;
+        }
+        else if (field === nameInput && !nameRegex.test(value)) {
+            valid = false;
+        }
+        else if (
+            [stat1Input, stat2Input, stat3Input].includes(field) &&
+            !statRegex.test(value)
+        ) {
+            valid = false;
+        }
+        else if (field === imageInput && !imageRegex.test(value)) {
+            valid = false;
+        }
+        else if (
+            field === descriptionInput &&
+            !descriptionRegex.test(value)
+        ) {
+            valid = false;
+        }
+    });
 
-const inputsValidation = () => {
-    let isvalid = false;
+    return valid;
+};
+    
+    createCardBtn.disabled = true
     fields.forEach((field) => {
         field.addEventListener("input", () => {
+            
             field.nextElementSibling.textContent = "";
             field.style.border = "";
 
             const value = field.value.trim();
 
+            
             if (value === "") {
+    
                 return;
             }
+
 
             if(field === idInput && !idRegex.test(value)){
 
                 field.nextElementSibling.textContent = "# suivi de 3 chiffres";
                 field.nextElementSibling.style.color = "red";
                 field.style.border = "1px solid red";
+                
             }
             else if(field === nameInput && !nameRegex.test(value)) {
                 field.nextElementSibling.textContent = "2 à 30 caractères";
                 field.nextElementSibling.style.color = "red";
                 field.style.border = "1px solid red";
-
+                
             }
             else if(field === typeInput && typeInput.value == "") {
                 field.nextElementSibling.textContent = "chose one type";
                 field.nextElementSibling.style.color = "red";
                 field.style.border = "1px solid red";
-
+                
             }
              else if(field === levelInput && levelInput.value == "") {
                 field.nextElementSibling.textContent = "this field can't be empty";
                 field.nextElementSibling.style.color = "red";
                 field.style.border = "1px solid red";
-
+                
+                    
             }
             else if(field === stat1Input && !statRegex.test(value)){
 
                 field.nextElementSibling.textContent = "Invalid Format";
                 field.nextElementSibling.style.color = "red";
                 field.style.border = "1px solid red";
-
+                
             }
             else if(field === stat2Input && !statRegex.test(value)){
                 field.nextElementSibling.textContent = "Invalid Format";
                 field.nextElementSibling.style.color = "red";
                 field.style.border = "1px solid red";
+                
             }
             else if(field === stat3Input && !statRegex.test(value)){
                 field.nextElementSibling.textContent = "Invalid Format";
                 field.nextElementSibling.style.color = "red";
                 field.style.border = "1px solid red";
+                
             }
             else if(field === imageInput && !imageRegex.test(value)){
                 field.nextElementSibling.textContent = "Invalid Format";
                 field.nextElementSibling.style.color = "red";
                 field.style.border = "1px solid red";
+                
             }
             else if(field === descriptionInput && !descriptionRegex.test(value)){
                 field.nextElementSibling.textContent = "Invalid Format";
                 field.nextElementSibling.style.color = "red";
                 field.style.border = "1px solid red";
+                
+                
             }
             else {
                 field.style.border = "1px solid green";
                 field.nextElementSibling.textContent = "";
-
-                isvalid = true;
+                
+            
+                
             }
-        
+            createCardBtn.disabled = !checkFormValid();
+            
         });
     });
-};
-inputsValidation();
-
-
-
-form.addEventListener('submit'  , (e) =>{
-    e.preventDefault();
     
+    const updateCreateButton = () => {
+    const isValid = checkFormValid();
 
-})
+    createCardBtn.disabled = !isValid;
+
+    console.log("Form valid:", isValid);
+    console.log("Button disabled:", createCardBtn.disabled);
+};
+
+form.addEventListener("input", updateCreateButton);
+form.addEventListener("change", updateCreateButton);
+
+
+
+
+
+
+
+
+
+
+
 
 form.addEventListener("reset", () => {
     form.querySelectorAll(".field").forEach((field) => {
@@ -373,6 +436,53 @@ const loadCardByType = () =>{
 // champ, et n'ajoutez jamais une créature invalide.
 // -------------------------------------------------------------
 
+form.addEventListener('submit'  , (e) =>{
+    e.preventDefault();
+
+    if(checkFormValid()){
+        
+
+        const id =  document.querySelector('[name = "id"]').value.trim();
+        const name = document.querySelector('[name = "name"]').value.trim();
+        const type = document.querySelector('[name = "type"]').value.trim();
+        const level = document.querySelector('[name = "level"]').value.trim();
+        const stat1 = document.querySelector('[name = "stat1"]').value.trim();
+        const stat2 = document.querySelector('[name = "stat2"]').value.trim();
+        // const stat3 = document.querySelector('[name = "stat3"]').value.trim();
+        const image = document.querySelector('[name = "image"]').value.trim();
+        const description = document.querySelector('[name = "description"]').value.trim();
+
+        const newCard = {
+            id: id,
+            name: name,
+            type: type,
+            level: level,
+            atk: stat1,
+            def: stat2,
+            race: "Custom",
+            desc: description,
+            card_images: [
+                {
+                    image_url: image
+                }
+            ]
+        };
+
+        let customCards = JSON.parse(localStorage.getItem("customCards")) || [];
+
+        customCards.push(newCard);
+
+        localStorage.setItem("customCards", JSON.stringify(customCards));
+
+        cards.push(newCard);
+
+        showCards(cards);
+        loadCardDetails();
+        
+    }
+    
+
+})
 
 // -------------------------------------------------------------
 // 6. MON ÉQUIPE
@@ -468,10 +578,18 @@ const main = async () => {
 
  cards = await getData();
 
+    let customCards = JSON.parse(localStorage.getItem("customCards")) || [];
+
+    cards = cards.concat(customCards);
+
+    
   showCards(cards)
   loadType()
   loadCardByType()
   loadCardDetails()
+
+
+  
 
   
 };
